@@ -58,5 +58,5 @@ export const generatePDF = (obj) => {
     });
 
 
-    return doc.output("blob");
+    return doc.output('blob');
 };

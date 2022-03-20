@@ -67,7 +67,7 @@ export const useVerifyTranscript = () => {
         if (account) {
 
             try {
-                const res = await contract.verifyTransript(eiAddress, studentID, hash)
+                const res = await contract.verifyTranscript(eiAddress, studentID, hash)
                 return res
             } catch (e) {
                 console.log("err : ", e)

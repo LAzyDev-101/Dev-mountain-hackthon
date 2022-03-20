@@ -354,16 +354,16 @@ const TranscriptPage = () => {
     transcriptObject.issuerPublicKey = account;
     console.log(transcriptObject);
     const res = generatePDF(transcriptObject);
-
-    const reader = new FileReader();
-    reader.readAsDataURL(res);
-    reader.onloadend = function () {
-      var base64data = reader.result;
-      setTransData(base64data.toString());
-    };
-    if (transData != null) {
-      const hash = hashSha256(transData);
-      console.log(hash);
+    const dataToHash = await res.text()
+    // const reader = new FileReader();
+    // reader.readAsDataURL(res);
+    // reader.onloadend = function () {
+    //   var base64data = reader.result;
+    //   setTransData(base64data.toString());
+    // };
+    if (dataToHash !== '') {
+      const hash = hashSha256(dataToHash);
+      console.log("hash", hash);
 
       setLoading(true);
       issueTranscript(transcriptObject.studentID, hash)

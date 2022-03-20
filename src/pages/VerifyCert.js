@@ -59,8 +59,7 @@ const VerifyCert = () => {
       reader.readAsArrayBuffer(file);
       reader.onloadend = async (evt) => {
         if (evt.target.readyState === FileReader.DONE) {
-          const arrayBuffer = evt.target.result,
-            array = new Uint8Array(arrayBuffer);
+          const arrayBuffer = evt.target.result
           const pdfDoc = await PDFDocument.load(arrayBuffer, {
             updateMetadata: false,
           });
@@ -80,25 +79,28 @@ const VerifyCert = () => {
   const handdleSubmit = async () => {
     // loadToggle();
     console.log("isloading", isLoading);
-    var reader = new FileReader();
 
-    reader.readAsDataURL(selectedFile);
-    reader.onloadend = function () {
-      var base64data = reader.result;
-      setTransData(base64data.toString());
-    };
-    if (transData != null) {
+    var res = new Blob([selectedFile])
+    res = res.slice(0, res.size, "application/pdf")
+    const dataToHash = await res.text()
+    // var reader = new FileReader();
+    // reader.readAsDataURL(res);
+    // reader.onloadend = function () {
+    //   var base64data = reader.result;
+    //   setTransData(base64data.toString());
+    // };
+    if (dataToHash !== '') {
       loadToggle();
-      // console.log(transData)
+      console.log(dataToHash)
 
-      const hash = hashSha256(transData);
+      const hash = hashSha256(dataToHash);
       console.log("isloading", hash);
       console.log(`${payload.eiAddress} ${payload.studentID} hash: ${hash}`);
 
       await verifyTranscript(payload.eiAddress, payload.studentID, hash).then((v) => {
         loadFinish();
         console.log("loadFinish", isLoading);
-        console.log(v.isCorrect);
+        console.log(v);
 
         if (v.isCorrect === true) {
           handleIsCorrectOpen();

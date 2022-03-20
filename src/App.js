@@ -4,7 +4,6 @@ import DefaultLayout from "./layout/default";
 import BlankLayout from "./layout/blank";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
-import IssueCert from "./pages/IssueCert";
 import AdminApproveResponse from "./pages/admin/AdminApproveResponse ";
 import VerifyCert from "./pages/VerifyCert";
 import TranscriptPage from "./pages/academy/TranscriptPage";
