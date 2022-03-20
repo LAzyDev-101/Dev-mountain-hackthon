@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import IssueCert from "./pages/IssueCert";
 import TranscriptPage from "./pages/TranscriptPage";
+import AdminApproveResponse  from "./pages/admin/AdminApproveResponse ";
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
           {/* <Route path="/" element={<LandingPage />} /> */}
           <Route path="/academy/test" element={<SimpleStorage />} />
           <Route path="/academy/transcript" element={<TranscriptPage />} />
+        </Route>
+        <Route path="/admin/response" element={<AdminApproveResponse />}>
+
         </Route>
       </Routes>
     </BrowserRouter>
