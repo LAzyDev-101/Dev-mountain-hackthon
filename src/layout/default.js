@@ -12,8 +12,9 @@ import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import { Button } from "@mui/material";
 import { useWeb3React } from "@web3-react/core";
-import useAuth from 'hook/useAuth';
-import useEagerConnect from 'hook/useEagerConnect'
+import useAuth from "hook/useAuth";
+import useEagerConnect from "hook/useEagerConnect";
+import ListItemText from "@mui/material/ListItemText";
 
 const drawerWidth = 240;
 
@@ -33,19 +34,15 @@ const NAV_CONFIGS = [
 ];
 
 const DefaultLayout = () => {
-
   const { account } = useWeb3React();
 
-  useEagerConnect()
+  useEagerConnect();
   const { login, logout } = useAuth();
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-      >
+      <AppBar position="fixed" sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}>
         <Toolbar>
           <Typography variant="h6" noWrap component="div"></Typography>
         </Toolbar>
@@ -69,41 +66,31 @@ const DefaultLayout = () => {
         <Divider />
         <List>
           {NAV_CONFIGS.map((navConfig, index) => (
-            <Link
-              href={navConfig.href}
-              style={{ textDecoration: "none" }}
-              key={navConfig.label}
-            >
+            <Link href={navConfig.href} style={{ textDecoration: "none" }} key={navConfig.label}>
               <ListItem button>
-                <Typography className="text-black no-underline">
-                  {navConfig.label}
-                </Typography>
+                <Typography className="text-black no-underline">{navConfig.label}</Typography>
               </ListItem>
             </Link>
           ))}
         </List>
         <Divider />
         <Box flex={1} />
-        {
-          account ?
-            <div>
-              <div className="px-2">Connected with : {account}</div>
-              <Button onClick={() => logout()}>
-                <Typography className="text-black">{"ออกจากระบบ"}</Typography>
-              </Button>
-            </div>
-            :
-            <Button onClick={() => login()}>
-              <Typography className="text-black">{"เข้าสู่ระบบ"}</Typography>
+        {account ? (
+          <div>
+            <div className="px-2">Connected with : {account}</div>
+            <Button onClick={() => logout()}>
+              <Typography className="text-black">{"ออกจากระบบ"}</Typography>
             </Button>
-        }
+          </div>
+        ) : (
+          <Button onClick={() => login()}>
+            <Typography className="text-black">{"เข้าสู่ระบบ"}</Typography>
+          </Button>
+        )}
 
         <Box my={1} />
       </Drawer>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}>
         <Toolbar />
         <Outlet />
       </Box>
