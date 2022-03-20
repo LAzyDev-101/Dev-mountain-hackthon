@@ -6,7 +6,7 @@ const defaultLayout = () => (
     </div>
 
     <div className="flex flex-row justify-center content-center">
-      <div className="basis-1/2 md:basis-1/2 lg:basis-1/3 text-center">
+      <div className="basis-1/2 md:basis-1/2 lg:basis-1/3">
         <Outlet />
       </div>
     </div>

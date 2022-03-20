@@ -1,0 +1,65 @@
+[
+  {
+    "page_label": "Test Form",
+    "fields": [
+      {
+        "field_id": "english_name",
+        "field_label": "Name",
+        "field_required": true,
+        "field_placeholder": "Enter name",
+        "field_type": "text",
+        "field_value": ""
+      },
+      {
+        "field_id": "email",
+        "field_label": "Email",
+        "field_required": true,
+        "field_placeholder": "Enter email",
+        "field_type": "text"
+      },
+
+      {
+        "field_id": "studentId",
+        "field_label": "Student ID",
+        "field_required": true,
+        "field_placeholder": "e.g. std-xxxxx",
+        "field_type": "text"
+      },
+      {
+        "field_id": "select",
+        "field_label": "Select_test",
+        "field_value": "select_test",
+        "field_required": true,
+        "field_options": [
+          {
+            "option_label": "Option 1"
+          },
+          {
+            "option_label": "Option-2"
+          }
+        ],
+        "field_type": "select"
+      },
+      {
+        "field_id": "contact",
+        "field_label": "Contact No.",
+        "field_required": true,
+        "field_placeholder": "Enter contact no.",
+        "field_type": "text"
+      },
+      {
+        "field_id": "agree",
+        "field_label": "I confirm bla bla bla.",
+        "field_type": "checkbox",
+        "field_value": false
+      },
+      {
+        "field_id": "identity",
+        "field_label": "Citizen No. or Passport No.",
+        "field_required": true,
+        "field_placeholder": "xxxx-xxxx-xxx",
+        "field_type": "text"
+      }
+    ]
+  }
+]
