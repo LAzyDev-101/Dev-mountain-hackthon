@@ -17,7 +17,7 @@ function App() {
           <Route path="/issue" element={<IssueCert />} />
         </Route>
 
-        <Route path="/academy" element={<BlankLayout />}>
+        <Route path="/academy" element={<DefaultLayout />}>
           {/* <Route path="/" element={<LandingPage />} /> */}
           <Route path="/academy/test" element={<SimpleStorage />} />
           <Route path="/academy/transcript" element={<TranscriptPage />} />
