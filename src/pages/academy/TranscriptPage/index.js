@@ -104,6 +104,7 @@ const TranscriptPage = () => {
     }
     if (transData) {
       const hash = hashSha256(transData)
+      //TODO: setLoading Page
       issueTranscript(transcriptObject.studentID, hash)
         .then((v) => {
           console.log(v)
