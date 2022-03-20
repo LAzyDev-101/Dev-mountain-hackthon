@@ -4,6 +4,7 @@ import TabBox from "components/TabBox";
 import TranscriptStepper from "components/TranscriptStepper";
 import { useState } from "react";
 import StudentDetailsSection from "./StudentDetailsSection";
+import StudentSummarySection from "./StudentSummarySection";
 import StudentTranscriptSection from "./StudentTranscriptSection";
 
 const steps = [
@@ -62,6 +63,7 @@ const TranscriptPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [output, setOutput] = useState({});
+  const [transcript, setTranscript] = useState([]);
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
@@ -71,6 +73,10 @@ const TranscriptPage = () => {
     setOutput((prev) => {
       return { ...prev, [type]: value };
     });
+  };
+
+  const onChangeTranscript = (tc) => {
+    setTranscript(tc);
   };
 
   const handleNext = () => {
@@ -113,7 +119,14 @@ const TranscriptPage = () => {
       </TabBox>
       <TabBox value={1} index={activeStep}>
         <StudentTranscriptSection
-          onChangeOutput={onChangeOutput}
+          onChangeTranscript={onChangeTranscript}
+          handleNext={handleNext}
+        />
+      </TabBox>
+      <TabBox value={2} index={activeStep}>
+        <StudentSummarySection
+          output={output}
+          transcript={transcript}
           handleNext={handleNext}
         />
       </TabBox>
