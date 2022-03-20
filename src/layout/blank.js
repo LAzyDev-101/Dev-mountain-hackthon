@@ -1,7 +1,5 @@
 import { Outlet, Link } from "react-router-dom";
 import * as React from "react";
-import Box from "@mui/material/Box";
-const drawerWidth = 240;
 
 const blankLayout = () => (
   <div className=" bg-sky-100 w-screen h-screen">

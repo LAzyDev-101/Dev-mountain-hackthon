@@ -1,10 +1,5 @@
 // https://docs.metamask.io/guide/ethereum-provider.html#using-the-provider
 
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { ReactComponent as Landing } from "../assets/landing_image.svg";
 import { ReactComponent as Logo } from "../assets/logo-small.svg";
 import { ReactComponent as Fox } from "../assets/metamask-fox.svg";
