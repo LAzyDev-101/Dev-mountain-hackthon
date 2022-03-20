@@ -1,19 +1,17 @@
 // https://docs.metamask.io/guide/ethereum-provider.html#using-the-provider
 
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { ReactComponent as Logo } from "../assets/logo.svg";
-import { hashEduJson } from "../utils/jspdf";
 import React, { useState } from "react";
-import { Buffer } from "buffer";
 import { PDFDocument } from "pdf-lib";
 import { hashSha256 } from "utils/hash";
 import { useVerifyTranscript } from "hook/useEduProof";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+
+import { ReactComponent as CheckSuccess } from "../assets/check_success.svg";
+import { ReactComponent as CrossError } from "../assets/red-error-icon.svg";
 
 const VerifyCert = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -21,6 +19,8 @@ const VerifyCert = () => {
   const [transData, setTransData] = useState(null);
   const [ownerData, setOwnerData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [isInCorrect, setIsInCorrect] = useState(false);
   const verifyTranscript = useVerifyTranscript();
 
   const loadFinish = () => {
@@ -28,6 +28,24 @@ const VerifyCert = () => {
   };
   const loadToggle = () => {
     setIsLoading(true);
+  };
+
+  // dialogue
+  const handleIsCorrectOpen = () => {
+    setIsCorrect(true);
+  };
+
+  const handleIsCorrectClose = () => {
+    setIsCorrect(false);
+  };
+
+  // dialogue
+  const handleIsInCorrectOpen = () => {
+    setIsInCorrect(true);
+  };
+
+  const handleIsInCorrectClose = () => {
+    setIsInCorrect(false);
   };
 
   const changeHandler = async (event) => {
@@ -60,6 +78,8 @@ const VerifyCert = () => {
     await readPdfMetadata();
   };
   const handdleSubmit = async () => {
+    // loadToggle();
+    console.log("isloading", isLoading);
     var reader = new FileReader();
 
     reader.readAsDataURL(selectedFile);
@@ -68,17 +88,29 @@ const VerifyCert = () => {
       setTransData(base64data.toString());
     };
     if (transData != null) {
+      loadToggle();
       // console.log(transData)
+
       const hash = hashSha256(transData);
+      console.log("isloading", hash);
       console.log(`${payload.eiAddress} ${payload.studentID} hash: ${hash}`);
+
       await verifyTranscript(payload.eiAddress, payload.studentID, hash).then((v) => {
+        loadFinish();
+        console.log("loadFinish", isLoading);
         console.log(v.isCorrect);
+
+        if (v.isCorrect === true) {
+          handleIsCorrectOpen();
+        } else {
+          handleIsInCorrectOpen();
+        }
       });
     }
   };
 
   return (
-    <div className=" bg-sky-100 w-screen h-screen">
+    <div className=" bg-sky-100 h-screen">
       <div className="flex flex-row justify-center items-center my-5 pt-5">
         <Logo />
       </div>
@@ -132,6 +164,68 @@ const VerifyCert = () => {
       <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
+
+      <Dialog
+        open={isCorrect}
+        onClose={handleIsCorrectClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <div className="flex flex-row justify-center p-5">
+            <CheckSuccess />
+          </div>
+
+          <div className="flex flex-row justify-center p-5">
+            <div className="font-bold text-3xl font-mono">เอกสารถูกต้อง</div>
+          </div>
+
+          <div className="flex flex-row justify-center my-2">
+            <div className="text-lg font-mono">เอกสารนี้ได้รับการยืนยันอย่างถูกต้อง</div>
+          </div>
+
+          <div className="flex flex-row justify-center mt-6">
+            <button
+              type="submit"
+              className=" bg-slate-500 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              onClick={(e) => handleIsCorrectClose(e)}
+            >
+              close
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={isInCorrect}
+        onClose={handleIsInCorrectClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <div className="flex flex-row justify-center px-5 pt">
+            <CrossError />
+          </div>
+
+          <div className="flex flex-row justify-center px-5">
+            <div className="font-bold text-3xl font-mono">error</div>
+          </div>
+
+          <div className="flex flex-row justify-center my-2">
+            <div className="text-lg font-mono">Something went wrong.</div>
+          </div>
+
+          <div className="flex flex-row justify-center mt-6">
+            <button
+              type="submit"
+              className="bg-slate-500 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              onClick={(e) => handleIsInCorrectClose(e)}
+            >
+              close
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
