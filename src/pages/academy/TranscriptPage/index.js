@@ -6,6 +6,7 @@ import StudentDetailsSection from "./StudentDetailsSection";
 import { generatePDF } from './generateTranscript'
 import { hashSha256 } from "utils/hash";
 import { useIssueTranscript } from "hook/useEduProof";
+import Loading from "components/Loading";
 
 const steps = [
   "Student Details",
@@ -46,11 +47,246 @@ const MOCK_TRACSRIPT_DATA = [
       },
     ],
   },
+  {
+    term: "2",
+    year: "2017",
+    grade: [
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+    ],
+  },
+  {
+    term: "1",
+    year: "2018",
+    grade: [
+      {
+        subjectID: "01123412",
+        subjectName: "aaaasfasf",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaaasfasf",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+    ],
+  },
+  {
+    term: "2",
+    year: "2018",
+    grade: [
+      {
+        subjectID: "01123412",
+        subjectName: "aaaasfasf",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaaasfasf",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaaasfasf",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+    ],
+  },
+  {
+    term: "1",
+    year: "2019",
+    grade: [
+      {
+        subjectID: "01123412",
+        subjectName: "aaaasfasf",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaaasfasf",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+    ],
+  },
+  {
+    term: "2",
+    year: "2019",
+    grade: [
+      {
+        subjectID: "01123412",
+        subjectName: "aaaasfasf",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaaasfasf",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaaasfasf",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+    ],
+  },
+  {
+    term: "1",
+    year: "2020",
+    grade: [
+      {
+        subjectID: "01123412",
+        subjectName: "aaaasfasf",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+    ],
+  },
+  {
+    term: "2",
+    year: "2020",
+    grade: [
+      {
+        subjectID: "01123412",
+        subjectName: "aaaasfasf",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaaasfasf",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaaasfasf",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaaasfasf",
+        grade: "A",
+        credit: 3,
+      },
+      {
+        subjectID: "01123412",
+        subjectName: "aaa",
+        grade: "A",
+        credit: 3,
+      },
+    ],
+  },
 ];
 
+
 const MOCK_TRANSCRIPT = {
-  id: "000001",
-  issuerName: "KMITL",
+  id: "000002",
+  issuerName: "KMITL_A",
   issuerPublicKey: "0x1124124",
   verificationType: "onChain",
   studentName: "Mr.A",
@@ -64,6 +300,7 @@ const TranscriptPage = () => {
   const [skipped, setSkipped] = useState(new Set());
   const [outPut, setOutput] = useState("No Bitches?");
   const [transData, setTransData] = useState(null);
+  const [isLoading, setLoading] = useState(false);
 
   const issueTranscript = useIssueTranscript()
 
@@ -92,7 +329,6 @@ const TranscriptPage = () => {
   const handleReset = () => setActiveStep(0);
 
   const onUploadTranscript = async (transcript = {}) => {
-    console.log(MOCK_TRANSCRIPT);
     const transcriptObject = MOCK_TRANSCRIPT
 
     const res = generatePDF(transcriptObject)
@@ -100,27 +336,35 @@ const TranscriptPage = () => {
     reader.readAsDataURL(res);
     reader.onloadend = function () {
       var base64data = reader.result;
-      setTransData(base64data);
+      setTransData(base64data.toString());
     }
-    if (transData) {
+    if (transData != null) {
       const hash = hashSha256(transData)
-      //TODO: setLoading Page
+      console.log(hash)
+
+      setLoading(true)
       issueTranscript(transcriptObject.studentID, hash)
         .then((v) => {
-          console.log(v)
+          console.log("success")
           var csvURL = window.URL.createObjectURL(res);
           var tempLink = document.createElement('a');
           tempLink.href = csvURL;
           tempLink.setAttribute('download', 'transcript.pdf');
           tempLink.click();
+          setLoading(false)
         })
         .catch((e) => {
           console.log(e)
+          setLoading(false)
         })
     }
 
   };
 
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   const Factory = () => {
     switch (activeStep) {

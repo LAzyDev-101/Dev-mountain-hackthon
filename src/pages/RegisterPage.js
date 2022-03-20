@@ -9,6 +9,10 @@ import StepLabel from "@mui/material/StepLabel";
 
 import { ReactComponent as Logo } from "../assets/logo-small.svg";
 import { ReactComponent as CheckSuccess } from "../assets/check_success.svg";
+import { useRegisterEI } from "hook/useEduProof";
+import { generateSecretWord } from "utils/generateSecretWord";
+import { hashSha256 } from "utils/hash";
+import Loading from "components/Loading";
 
 // import React, { useState } from "react";
 
@@ -18,7 +22,11 @@ const RegisterPage = () => {
   const [open, setOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
+  const [eiName, setEIName] = useState('');
+  const [eiID, setEIID] = useState('');
+  const [isLoading, setLoading] = useState(false);
 
+  const registerEI = useRegisterEI()
   // stepper
   const isStepOptional = (step) => {
     // not use
@@ -64,13 +72,41 @@ const RegisterPage = () => {
   };
 
   // dialogue
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickOpen = async () => {
+    if (eiID !== '' && eiName !== '') {
+      const secretWord = generateSecretWord()
+      alert(`Please remember your secret word: ${secretWord}`)
+      const secretWordHash = hashSha256(secretWord)
+      setLoading(true)
+      await registerEI(eiID, eiName, secretWordHash)
+        .then((v) => {
+          console.log(v)
+        }).catch((e) => {
+          console.log(e)
+        })
+
+      setLoading(false);
+      setOpen(true);
+    } else {
+      console.log("input err")
+    }
+
   };
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  const onEINameChange = (e) => {
+    setEIName(e.target.value)
+  }
+  const onEIIDChange = (e) => {
+    setEIID(e.target.value)
+  }
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   return (
     <div className="bg-sky-100 w-screen h-100">
@@ -160,6 +196,7 @@ const RegisterPage = () => {
                               className="shadow appearance-none border rounded w-full py-1.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                               id="field"
                               placeholder="ชื่อสถานศึกษาของคุณ"
+                              onChange={(e) => onEINameChange(e)}
                             />
                           </div>
                           <div className="basis-4/12">
@@ -168,6 +205,7 @@ const RegisterPage = () => {
                               className="shadow appearance-none border rounded w-full py-1.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                               id="field"
                               placeholder="ชื่อสถานศึกษาของคุณ"
+                              onChange={(e) => onEIIDChange(e)}
                             />
                           </div>
                         </div>
@@ -198,12 +236,7 @@ const RegisterPage = () => {
                             <div className="text-lg">สมัครสมาชิก</div>
                           </div>
                           <div className="basis-8/12">
-                            <input
-                              type="text"
-                              className="shadow appearance-none border rounded w-full py-1.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                              id="field"
-                              placeholder="ชื่อสถานศึกษาของคุณ"
-                            />
+                            {eiName}
                           </div>
                         </div>
 
@@ -212,12 +245,7 @@ const RegisterPage = () => {
                             <div className="text-lg">รหัสประจำสถานศึกษา</div>
                           </div>
                           <div className="basis-8/12">
-                            <input
-                              type="text"
-                              className="shadow appearance-none border rounded w-full py-1.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                              id="field"
-                              placeholder="รหัสประจำสถานศึกษา"
-                            />
+                            {eiID}
                           </div>
                         </div>
 
