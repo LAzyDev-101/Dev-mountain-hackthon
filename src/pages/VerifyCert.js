@@ -50,7 +50,7 @@ const VerifyCert = () => {
     }
     await readPdfMetadata()
   }
-  const handdleSubmit = () => {
+  const handdleSubmit = async () => {
     var reader = new FileReader();
 
     reader.readAsDataURL(selectedFile);
@@ -62,8 +62,8 @@ const VerifyCert = () => {
       // console.log(transData)
       const hash = hashSha256(transData)
       console.log(`${payload.eiAddress} ${payload.studentID} hash: ${hash}`);
-      verifyTranscript(payload.eiAddress, payload.studentID, hash).then((v) => {
-        console.log(v)
+      await verifyTranscript(payload.eiAddress, payload.studentID, hash).then((v) => {
+        console.log(v.isCorrect)
       })
     }
   };
@@ -122,8 +122,8 @@ const VerifyCert = () => {
         </button>
       </div>
 
-      {ownerData!=null && 
-      <h2>{ownerData}</h2>}
+      {ownerData != null &&
+        <h2>{ownerData}</h2>}
     </div>
   );
 };
