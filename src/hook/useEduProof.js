@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useEduProofContract } from 'hook/useContracts'
 import useActiveWeb3React from 'hook/useActiveWeb3React'
 
@@ -77,4 +77,38 @@ export const useVerifyTranscript = () => {
         return true
     }, [account, contract])
     return verifyTranscript
+}
+
+export const useGetALLEI = () => {
+    const account = useActiveWeb3React()
+
+    const [allEI, setALLEI] = useState(null)
+    const contract = useEduProofContract()
+    const getALL = async () => {
+        try {
+            const res = await contract.getALLEI()
+            setALLEI(res)
+        } catch (e) {
+
+            return false
+        }
+    }
+    useEffect(() => {
+        getALL()
+    }, [contract])
+    return allEI
+}
+
+export const useGetEIAddress = () => {
+    const account = useActiveWeb3React()
+    const contract = useEduProofContract()
+    return useCallback(async (id) => {
+        try {
+            const res = await contract.idTOEIAddress(id)
+            return res
+        } catch (e) {
+            console.log(e)
+            return false
+        }
+    }, [account, contract])
 }

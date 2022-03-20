@@ -1,5 +1,5 @@
 export default {
   eduProof: {
-    "97": 17725956,
+    "97": 17731764,
   }
 }

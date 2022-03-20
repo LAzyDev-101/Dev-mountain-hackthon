@@ -1,5 +1,23 @@
 [
     {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "eiAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "string",
+                "name": "secretWord",
+                "type": "string"
+            }
+        ],
+        "name": "approveEIID",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
         "anonymous": false,
         "inputs": [
             {
@@ -11,6 +29,24 @@
         ],
         "name": "ApproveEIID",
         "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "studentID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "hash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "issueTranscript",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
     },
     {
         "anonymous": false,
@@ -51,6 +87,29 @@
         "type": "event"
     },
     {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "eiid",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "secretHash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "registerEIID",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
         "anonymous": false,
         "inputs": [
             {
@@ -82,6 +141,26 @@
         "type": "event"
     },
     {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "eiAddress",
+                "type": "address"
+            }
+        ],
+        "name": "revokeEIID",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
         "anonymous": false,
         "inputs": [
             {
@@ -93,6 +172,19 @@
         ],
         "name": "RevokeEIID",
         "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
     },
     {
         "inputs": [
@@ -111,48 +203,6 @@
             }
         ],
         "stateMutability": "pure",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "eiAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "string",
-                "name": "secretWord",
-                "type": "string"
-            }
-        ],
-        "name": "approveEIID",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "eTranscriptHash",
-        "outputs": [
-            {
-                "internalType": "bytes32",
-                "name": "",
-                "type": "bytes32"
-            }
-        ],
-        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -184,6 +234,98 @@
                 "internalType": "bytes32",
                 "name": "secretHash",
                 "type": "bytes32"
+            },
+            {
+                "internalType": "bool",
+                "name": "isRegistered",
+                "type": "bool"
+            },
+            {
+                "internalType": "address",
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "eTranscriptHash",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getALLEI",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "enum EduProof.EIStatus",
+                        "name": "status",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "EIID",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "secretHash",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isRegistered",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "_address",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct EduProof.EIDetail[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "idCounter",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
             }
         ],
         "stateMutability": "view",
@@ -193,18 +335,19 @@
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "studentID",
+                "name": "",
                 "type": "uint256"
-            },
-            {
-                "internalType": "bytes32",
-                "name": "hash",
-                "type": "bytes32"
             }
         ],
-        "name": "issueTranscript",
-        "outputs": [],
-        "stateMutability": "nonpayable",
+        "name": "idTOEIAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -223,62 +366,6 @@
     {
         "inputs": [
             {
-                "internalType": "string",
-                "name": "eiid",
-                "type": "string"
-            },
-            {
-                "internalType": "string",
-                "name": "name",
-                "type": "string"
-            },
-            {
-                "internalType": "bytes32",
-                "name": "secretHash",
-                "type": "bytes32"
-            }
-        ],
-        "name": "registerEIID",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "renounceOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "eiAddress",
-                "type": "address"
-            }
-        ],
-        "name": "revokeEIID",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "newOwner",
-                "type": "address"
-            }
-        ],
-        "name": "transferOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
                 "internalType": "address",
                 "name": "eiAddress",
                 "type": "address"
@@ -294,7 +381,7 @@
                 "type": "bytes32"
             }
         ],
-        "name": "verifyTransript",
+        "name": "verifyTranscript",
         "outputs": [
             {
                 "components": [
