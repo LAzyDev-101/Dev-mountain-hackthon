@@ -1,3 +1,3 @@
 export const generateSecretWord = () => {
-    return "dev moutain"
+    return "dev mountain"
 }
