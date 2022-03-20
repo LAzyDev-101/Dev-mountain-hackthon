@@ -18,7 +18,6 @@ function App() {
         </Route>
 
         <Route path="/academy" element={<DefaultLayout />}>
-          {/* <Route path="/" element={<LandingPage />} /> */}
           <Route path="/academy/test" element={<SimpleStorage />} />
           <Route path="/academy/transcript" element={<TranscriptPage />} />
         </Route>

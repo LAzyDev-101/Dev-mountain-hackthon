@@ -3,4 +3,9 @@ module.exports = {
     tailwindcss: {},
     autoprefixer: {},
   },
+  theme: {
+    fontFamily: {
+      roboto: ["Roboto", "sans-serif"],
+    },
+  },
 };
