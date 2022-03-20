@@ -7,6 +7,7 @@ import { generatePDF } from './generateTranscript'
 import { hashSha256 } from "utils/hash";
 import { useIssueTranscript } from "hook/useEduProof";
 import Loading from "components/Loading";
+import useActiveWeb3React from "hook/useActiveWeb3React";
 
 const steps = [
   "Student Details",
@@ -302,6 +303,8 @@ const TranscriptPage = () => {
   const [transData, setTransData] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
+  const { account } = useActiveWeb3React()
+
   const issueTranscript = useIssueTranscript()
 
   const isStepSkipped = (step) => {
@@ -329,9 +332,11 @@ const TranscriptPage = () => {
   const handleReset = () => setActiveStep(0);
 
   const onUploadTranscript = async (transcript = {}) => {
-    const transcriptObject = MOCK_TRANSCRIPT
-
+    let transcriptObject = MOCK_TRANSCRIPT
+    transcriptObject.issuerPublicKey = account
+    console.log(transcriptObject)
     const res = generatePDF(transcriptObject)
+
     const reader = new FileReader();
     reader.readAsDataURL(res);
     reader.onloadend = function () {
