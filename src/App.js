@@ -1,11 +1,13 @@
 import "./App.css";
-import SimpleStorage from "./pages/SimpleStorage";
+import SimpleStorage from "./pages/academy/SimpleStorage";
 import DefaultLayout from "./layout/default";
 import BlankLayout from "./layout/blank";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import IssueCert from "./pages/IssueCert";
-import TranscriptPage from "./pages/TranscriptPage";
+import TranscriptPage from "./pages/academy/TranscriptPage";
+import AdminProfileInfoPage from "./pages/academy/info";
+import AdminTranscriptHistoryPage from "./pages/academy/History";
 
 function App() {
   return (
@@ -21,6 +23,11 @@ function App() {
           {/* <Route path="/" element={<LandingPage />} /> */}
           <Route path="/academy/test" element={<SimpleStorage />} />
           <Route path="/academy/transcript" element={<TranscriptPage />} />
+          <Route path="/academy/info" element={<AdminProfileInfoPage />} />
+          <Route
+            path="/academy/history"
+            element={<AdminTranscriptHistoryPage />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,7 +1,8 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
+import Link from "@mui/material/Link";
 import CssBaseline from "@mui/material/CssBaseline";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,10 +15,28 @@ import ListItemText from "@mui/material/ListItemText";
 
 const drawerWidth = 240;
 
+const NAV_CONFIGS = [
+  {
+    label: "ตั้งค่าบัญชี",
+    href: "info",
+  },
+  {
+    label: "เพิ่มผลการศึกษา",
+    href: "transcript",
+  },
+  {
+    label: "ประวัติการบันทึก",
+    href: "history",
+  },
+];
+
 const defaultLayout = () => (
   <Box sx={{ display: "flex" }}>
     <CssBaseline />
-    <AppBar position="fixed" sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}>
+    <AppBar
+      position="fixed"
+      sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
+    >
       <Toolbar>
         <Typography variant="h6" noWrap component="div">
           Permanent drawer
@@ -39,10 +58,18 @@ const defaultLayout = () => (
       <Toolbar />
       <Divider />
       <List>
-        {["ตั้งค่าบัญชี", "ระดับการศึกษา ", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemText primary={text} />
-          </ListItem>
+        {NAV_CONFIGS.map((navConfig, index) => (
+          <Link
+            href={navConfig.href}
+            style={{ textDecoration: "none" }}
+            key={navConfig.label}
+          >
+            <ListItem button>
+              <Typography className="text-black no-underline">
+                {navConfig.label}
+              </Typography>
+            </ListItem>
+          </Link>
         ))}
       </List>
       <Divider />
@@ -54,7 +81,10 @@ const defaultLayout = () => (
         ))}
       </List> */}
     </Drawer>
-    <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}>
+    <Box
+      component="main"
+      sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
+    >
       <Toolbar />
       <Outlet />
     </Box>
