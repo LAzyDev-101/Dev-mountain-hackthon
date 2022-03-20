@@ -1,50 +1,47 @@
-import { FormContext } from "components/Transcript/FormContext";
-import { useEffect, useState } from "react";
-import Element from "../../../components/Transcript/FormFields";
-import formJSON from "../../../formObject.json";
+import { Button, TextField, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 
-const StudentDetailsSection = ({ onChangeOutput }) => {
-  const [elements, setElements] = useState(null);
-  const { fields, page_label } = elements ?? {};
+const CONTENTS = [
+  {
+    label: "ชื่อภาษาไทย",
+    key: "firstname",
+  },
+  {
+    label: "นามสกุลภาษาไทย",
+    key: "lastname",
+  },
+  {
+    label: "รหัสประจำตัวนักเรียน",
+    key: "studentId",
+  },
+];
 
-  useEffect(() => {
-    setElements(formJSON[0]);
-  }, []);
-
-  const handleChange = (id, event) => {
-    const newElements = { ...elements };
-    newElements.fields.forEach((field) => {
-      const { field_type, field_id } = field;
-      if (id === field_id) {
-        switch (field_type) {
-          case "checkbox":
-            field["field_value"] = event.target.checked;
-            break;
-
-          default:
-            field["field_value"] = event.target.value;
-            break;
-        }
-      }
-      setElements(newElements);
-    });
-    onChangeOutput(elements);
+const StudentDetailsSection = ({ onChangeOutput, handleNext }) => {
+  const handleChange = (key, value) => {
+    onChangeOutput(key, value);
   };
 
+  const formBuilder = (formConfig) => (
+    <div key={formConfig.key}>
+      <Typography>{formConfig.label}</Typography>
+      <TextField
+        size="small"
+        fullWidth
+        onChange={(e) => handleChange(formConfig.key, e.target.value)}
+      />
+    </div>
+  );
+
   return (
-    <div key={0} className="basis-1/2">
-      <FormContext.Provider value={{ handleChange }}>
-        <div className="">
-          <div className="flex flex-row items-center justify-center mb-5 font-mono font-bold">
-            {page_label}
-          </div>
-          <form className="bg-white shadow-md rounded px-8 pt-6 pb-8">
-            {fields
-              ? fields.map((field, i) => <Element key={i} field={field} />)
-              : null}
-          </form>
-        </div>
-      </FormContext.Provider>
+    <div className="basis-1/2 bg-white shadow-md rounded px-8 pt-6 pb-8">
+      <Typography variant="h6">ข้อมูลส่วนตัว</Typography>
+      <Box pt={1} />
+      <div className="grid grid-cols-2 gap-4">{CONTENTS.map(formBuilder)}</div>
+      <div className="pt-8 flex justify-center">
+        <Button variant="outlined" onClick={handleNext}>
+          ยืนยันข้อมูล
+        </Button>
+      </div>
     </div>
   );
 };

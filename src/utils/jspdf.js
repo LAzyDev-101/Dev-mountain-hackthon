@@ -1,19 +1,7 @@
-import { Button } from "@mui/material";
-import { Box } from "@mui/system";
-import TabBox from "components/TabBox";
-import TranscriptStepper from "components/TranscriptStepper";
-import { useState } from "react";
-import StudentDetailsSection from "./StudentDetailsSection";
-import StudentSummarySection from "./StudentSummarySection";
-import StudentTranscriptSection from "./StudentTranscriptSection";
-import { generatePDF } from "./generateTranscript";
-import { hashSha256 } from "utils/hash";
-import { useIssueTranscript } from "hook/useEduProof";
-import Loading from "components/Loading";
-import useActiveWeb3React from "hook/useActiveWeb3React";
-import SuccessSection from "./SuccessSection";
+import { jsPDF } from "jspdf";
+import { ethers } from "ethers";
 
-const MOCK_TRACSRIPT_DATA = [
+const transcriptData = [
   {
     term: "1",
     year: "2017",
@@ -279,164 +267,77 @@ const MOCK_TRACSRIPT_DATA = [
     ],
   },
 ];
-const MOCK_TRANSCRIPT = {
-  id: "000002",
-  issuerName: "KMITL_A",
+
+const objOne = {
+  id: "000001",
+  issuerName: "KMITL",
   issuerPublicKey: "0x1124124",
   verificationType: "onChain",
   studentName: "Mr.A",
-  studentID: "1234",
   educationType: "transcript_university",
-  data: MOCK_TRACSRIPT_DATA,
+  data: transcriptData,
 };
 
-const steps = ["Student Details", "Transcript", "Summary", "Finish"];
+const generatePDF = (obj) => {
+  var doc = new jsPDF();
 
-const TranscriptPage = () => {
-  const [activeStep, setActiveStep] = useState(0);
-  const [skipped, setSkipped] = useState(new Set());
-  const [output, setOutput] = useState({});
-  const [transcript, setTranscript] = useState([]);
-  // const [outPut, setOutput] = useState("No Bitches?");
-  const [transData, setTransData] = useState(null);
-  const [isLoading, setLoading] = useState(false);
+  var transcriptData = obj.data;
 
-  const { account } = useActiveWeb3React();
+  doc.setFont("times", "normal");
+  doc.text("Faculty of ... .", 100, 15, null, null);
+  doc.setFontSize(14);
+  doc.text(`Name: ${obj.studentName}`, 25, 25, null, null);
+  doc.text("Date of Birth: April,0,1999", 25, 30, null, null);
+  doc.text("Student ID: 1212312121", 100, 30, null, null);
+  doc.text("Date of Admission: 2017", 25, 35, null, null);
+  doc.text("Date of Graduation: 2020", 100, 35, null, null);
+  doc.text("Degree: Bachelor Of Engineering", 25, 40, null, null);
+  doc.text("Major: Computer Engineering", 25, 45, null, null);
 
-  const issueTranscript = useIssueTranscript();
+  let startXS1 = 25;
+  let startYS1 = 55;
+  const smallLineHeight = 4;
+  for (var i = 0; i < 8; i++) {
+    if (startYS1 >= 230) {
+      startXS1 = 110;
+      startYS1 = 55;
+    }
 
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
-  };
+    doc.setFontSize(14);
+    doc.text(
+      `${transcriptData[i].term} Semester, Years, ${transcriptData[i].year}`,
+      startXS1,
+      startYS1,
+      null,
+      null
+    );
 
-  const onChangeOutput = (type, value) => {
-    setOutput((prev) => {
-      return { ...prev, [type]: value };
+    doc.setFontSize(12);
+    startYS1 += smallLineHeight;
+    var startSmallY = startYS1;
+    transcriptData[i].grade.map((v) => {
+      var startSmallX = startXS1;
+      startSmallY += smallLineHeight;
+
+      doc.text(`${v.subjectID}`, startSmallX, startSmallY);
+      startSmallX += 20;
+      doc.text(`${v.subjectName}`, startSmallX, startSmallY);
+      startSmallX += 35;
+      doc.text(`${v.credit}`, startSmallX, startSmallY);
+      startSmallX += 5;
+      doc.text(`${v.grade}`, startSmallX, startSmallY);
     });
-  };
-
-  const onChangeTranscript = (tc) => {
-    setTranscript(tc);
-  };
-
-  const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
-  };
-
-  const handleBack = () =>
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-
-  const handleReset = () => setActiveStep(0);
-
-  const buildTranscript = () => {
-    const parsed = {
-      id: "000002",
-      issuerName: "KMITL_A",
-      issuerPublicKey: "0x1124124",
-      verificationType: "onChain",
-      studentName: `${output.firstname} ${output.lastname}`,
-      studentID: output.studentId,
-      educationType: "transcript_university",
-      data: transcript,
-    };
-    return parsed;
-  };
-
-  const onUploadTranscript = async (tsObject) => {
-    let transcriptObject = tsObject;
-    transcriptObject.issuerPublicKey = account;
-    console.log(transcriptObject);
-    const res = generatePDF(transcriptObject);
-
-    const reader = new FileReader();
-    reader.readAsDataURL(res);
-    reader.onloadend = function () {
-      var base64data = reader.result;
-      setTransData(base64data.toString());
-    };
-    if (transData != null) {
-      const hash = hashSha256(transData);
-      console.log(hash);
-
-      setLoading(true);
-      issueTranscript(transcriptObject.studentID, hash)
-        .then((v) => {
-          console.log("success");
-          var csvURL = window.URL.createObjectURL(res);
-          var tempLink = document.createElement("a");
-          tempLink.href = csvURL;
-          tempLink.setAttribute("download", "transcript.pdf");
-          tempLink.click();
-          setLoading(false);
-          setTimeout(() => {
-            handleNext();
-          }, 1000);
-        })
-        .catch((e) => {
-          console.log(e);
-          setLoading(false);
-        });
-    }
-  };
-
-  if (isLoading) {
-    return <Loading />;
+    startYS1 = startSmallY + 10;
   }
+  doc.text(`id: ${obj.id}`, startXS1, startYS1);
+  startYS1 += 5;
+  doc.text(`issuerName: ${obj.issuerName}`, startXS1, startYS1);
+  startYS1 += 5;
+  doc.text(`issuerName: ${obj.issuerPublicKey}`, startXS1, startYS1);
+  startYS1 += 5;
+  doc.text(`studentName: ${obj.studentName}`, startXS1, startYS1);
+  startYS1 += 5;
+  doc.text(`educationType: ${obj.educationType}`, startXS1, startYS1);
 
-  const Factory = () => {
-    switch (activeStep) {
-      case 0:
-        return <StudentDetailsSection onChangeOutput={onChangeOutput} />;
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div>
-      <Button
-        variant="contained"
-        onClick={() => onUploadTranscript(MOCK_TRANSCRIPT)}
-      >
-        on upload
-      </Button>
-      <Box py={2} />
-      <TranscriptStepper
-        activeStep={activeStep}
-        isStepSkipped={isStepSkipped}
-        steps={steps}
-      />
-      <TabBox value={0} index={activeStep}>
-        <StudentDetailsSection
-          onChangeOutput={onChangeOutput}
-          handleNext={handleNext}
-        />
-      </TabBox>
-      <TabBox value={1} index={activeStep}>
-        <StudentTranscriptSection
-          onChangeTranscript={onChangeTranscript}
-          handleNext={handleNext}
-        />
-      </TabBox>
-      <TabBox value={2} index={activeStep}>
-        <StudentSummarySection
-          output={output}
-          transcript={transcript}
-          handleNext={() => onUploadTranscript(buildTranscript())}
-        />
-      </TabBox>
-      <TabBox value={3} index={activeStep}>
-        <SuccessSection handleNext={handleNext} />
-      </TabBox>
-    </div>
-  );
+  doc.save("test.pdf");
 };
-
-export default TranscriptPage;
