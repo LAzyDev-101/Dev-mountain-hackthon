@@ -68,7 +68,7 @@ export const useVerifyTranscript = () => {
 
             try {
                 const res = await contract.verifyTransript(eiAddress, studentID, hash)
-                await res.wait()
+                return res
             } catch (e) {
                 console.log("err : ", e)
                 return false
@@ -78,4 +78,3 @@ export const useVerifyTranscript = () => {
     }, [account, contract])
     return verifyTranscript
 }
-
