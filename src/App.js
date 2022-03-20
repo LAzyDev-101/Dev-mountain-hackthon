@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import IssueCert from "./pages/IssueCert";
 import TranscriptPage from "./pages/TranscriptPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/test" element={<SimpleStorage />} />
           <Route path="/issue" element={<IssueCert />} />
+          <Route path="/register" element={<RegisterPage />} />
         </Route>
 
         <Route path="/academy" element={<DefaultLayout />}>
