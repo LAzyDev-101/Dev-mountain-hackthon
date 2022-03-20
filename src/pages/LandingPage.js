@@ -5,70 +5,53 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { ReactComponent as LearnImage } from "../assets/undraw_education.svg";
+import { ReactComponent as Logo } from "../assets/logo.svg";
 
 import React, { useState } from "react";
 
 const LandingPage = () => {
   return (
-    <div className=" bg-slate-300 w-screen h-100">
-      <div className=" flex flex-row justify-center items-center"></div>
+    <div className=" bg-sky-100 w-screen h-screen">
+      <div className=" flex flex-row justify-end items-center py-1">
+        <button class="bg-transparent border border-blue-900 text-blue-500 hover:bg-blue-700 hover:text-white text-center py-2 px-4 rounded">
+          ค้นหาผลการเรียน
+        </button>
 
-      {/* <div className="bg-fuchsia-400 flex flex-row justify-center items-center">
-        <div className="bg-fuchsia-500 basis-1/3 h-20 align-middle rounded">1</div>
-
-        <div className="bg-fuchsia-500 basis-1/3 h-10 items-center rounded">1</div>
-
-        <div className="bg-fuchsia-500 basis-1/3 rounded">1</div>
-      </div> */}
-
-      <div class="flex flex-row items-center">
-        <div class="basis-1/2 m-auto">
-          <div class=" h-32 w-32 flex flex-col justify-center items-center m-auto rounded bg-blue-500 hover:bg-blue-700 text-white text-center ease-linear transition-all duration-150">
-            1
-          </div>
-        </div>
-        <div class="basis-1/2 m-auto">
-          <div class=" h-32 w-32 flex flex-col justify-center items-center m-auto rounded bg-blue-500 hover:bg-blue-700 text-white text-center ease-linear transition-all duration-150">
-            1
-          </div>
-        </div>
+        <button class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mx-3">
+          เข้าสู่ระบบ
+        </button>
       </div>
 
-      <div class="flex flex-row items-center">
-        <div class="basis-1/2 m-auto">
-          <div class=" h-32 w-32 flex flex-col justify-center items-center m-auto rounded bg-blue-500 hover:bg-blue-700 text-white text-center ease-linear transition-all duration-150">
-            1
-          </div>
-        </div>
-        <div class="basis-1/2 m-auto">
-          <div class=" h-32 w-32 flex flex-col justify-center items-center m-auto rounded bg-blue-500 hover:bg-blue-700 text-white text-center ease-linear transition-all duration-150">
-            1
-          </div>
-        </div>
-      </div>
-
-      {/* <div class="flex flex-row items-center my-5">
-        <LearnImage />
+      <div className="flex flex-row justify-center items-center my-5 pt-5">
+        <Logo />
       </div>
 
       <div className="flex flex-row justify-center items-center">
-        <Card sx={{ maxWidth: 345 }}>
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              Lizard
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all
-              continents except Antarctica
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small">Share</Button>
-            <Button size="small">Learn More</Button>
-          </CardActions>
-        </Card>
-      </div> */}
+        <div className="font-bold text-4xl font-mono">ระบบขอข้อมูลผลการเรียนออนไลน์</div>
+      </div>
+
+      <div className="flex flex-row justify-center items-center mt-4">
+        <div className="font-bold">ข้อมูลผลการเรียนรายบุคคล</div>
+      </div>
+
+      <div className="flex flex-row justify-center items-center mt-10">
+        <div className=" basis-4/12">
+          <div className="font-bold">อัพโหลดไฟล์</div>
+        </div>
+      </div>
+
+      <div className="flex flex-row justify-center items-center mt-3">
+        <div className=" basis-4/12">
+          <label class="w-full flex flex-col items-center py-1  bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue  hover:text-gray-300">
+            <span class="text-base leading-normal">เลือกไฟล์เอกสารของคุณ</span>
+            <input type="file" class="hidden" />
+          </label>
+        </div>
+      </div>
+
+      <div className="flex flex-row justify-center items-center mt-10">
+        <button class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-3">ยืนยัน</button>
+      </div>
     </div>
   );
 };
