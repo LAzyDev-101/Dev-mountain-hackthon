@@ -16,7 +16,7 @@ const LandingPage = () => {
         <Logo />
       </div>
 
-      <div className="flex flex-row justify-center items-center">
+      {/* <div className="flex flex-row justify-center items-center">
         <div className="font-bold text-4xl font-mono">ระบบขอข้อมูลผลการเรียนออนไลน์</div>
       </div>
 
@@ -41,7 +41,7 @@ const LandingPage = () => {
 
       <div className="flex flex-row justify-center items-center mt-10">
         <button class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-3">ยืนยัน</button>
-      </div>
+      </div> */}
     </div>
   );
 };
