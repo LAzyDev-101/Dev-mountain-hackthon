@@ -3,6 +3,9 @@ import { Box } from "@mui/system";
 import TranscriptStepper from "components/TranscriptStepper";
 import { useState } from "react";
 import StudentDetailsSection from "./StudentDetailsSection";
+import { generatePDF } from './generateTranscript'
+import { hashSha256 } from "utils/hash";
+import { useIssueTranscript } from "hook/useEduProof";
 
 const steps = [
   "Student Details",
@@ -60,6 +63,9 @@ const TranscriptPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [outPut, setOutput] = useState("No Bitches?");
+  const [transData, setTransData] = useState(null);
+
+  const issueTranscript = useIssueTranscript()
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
@@ -85,10 +91,35 @@ const TranscriptPage = () => {
 
   const handleReset = () => setActiveStep(0);
 
-  const onUploadTranscript = (transcript = {}) => {
+  const onUploadTranscript = async (transcript = {}) => {
     console.log(MOCK_TRANSCRIPT);
-    //TODO implement regis transcript
+    const transcriptObject = MOCK_TRANSCRIPT
+
+    const res = generatePDF(transcriptObject)
+    const reader = new FileReader();
+    reader.readAsDataURL(res);
+    reader.onloadend = function () {
+      var base64data = reader.result;
+      setTransData(base64data);
+    }
+    if (transData) {
+      const hash = hashSha256(transData)
+      issueTranscript(transcriptObject.studentID, hash)
+        .then((v) => {
+          console.log(v)
+          var csvURL = window.URL.createObjectURL(res);
+          var tempLink = document.createElement('a');
+          tempLink.href = csvURL;
+          tempLink.setAttribute('download', 'transcript.pdf');
+          tempLink.click();
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
+
   };
+
 
   const Factory = () => {
     switch (activeStep) {

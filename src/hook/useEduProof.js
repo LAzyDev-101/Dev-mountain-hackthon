@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
-import { useEduProofContract } from './useContracts'
-import useActiveWeb3React from './useActiveWeb3React'
+import { useEduProofContract } from 'hook/useContracts'
+import useActiveWeb3React from 'hook/useActiveWeb3React'
 
 
 export const useRegisterEI = (eiid, name, secretHash) => {
@@ -41,10 +41,10 @@ export const useApproveEIID = (eiAddress, secretWord) => {
     return approveEIID
 }
 
-export const useIssueTranscript = (studentID, hash) => {
+export const useIssueTranscript = () => {
     const account = useActiveWeb3React()
     const contract = useEduProofContract()
-    const issueTranscript = useCallback(async () => {
+    const issueTranscript = useCallback(async (studentID, hash) => {
         if (account) {
 
             try {
@@ -56,7 +56,7 @@ export const useIssueTranscript = (studentID, hash) => {
             }
         }
         return true
-    }, [account, studentID, hash, contract])
+    }, [account, contract])
     return issueTranscript
 }
 
