@@ -6,65 +6,66 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { ReactComponent as Logo } from "../assets/logo.svg";
-import jsPDF from "../utils/jspdf";
+import { hashEduJson } from "../utils/jspdf";
 import React, { useState } from "react";
 import { Buffer } from "buffer";
 import { PDFDocument } from 'pdf-lib'
+import { hashSha256 } from "utils/hash";
+import { useVerifyTranscript } from "hook/useEduProof";
+
 
 const VerifyCert = () => {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [payload, setPayload] = useState({ eiAddress: "", studentID: "" });
+  const [transData, setTransData] = useState(null);
+  const [ownerData, setOwnerData] = useState(null);
+  const verifyTranscript = useVerifyTranscript()
 
   const changeHandler = async (event) => {
-    setSelectedFile(event.target.files[0]);
+    const file = event.target.files[0]
+    setSelectedFile(file);
     async function readPdfMetadata() {
       // Fetch PDF
 
       var reader = new FileReader();
-      const fileByteArray = [];
-      reader.readAsArrayBuffer(event.target.files[0]);
+      const file = event.target.files[0]
+      reader.readAsArrayBuffer(file);
       reader.onloadend = async (evt) => {
         if (evt.target.readyState === FileReader.DONE) {
           const arrayBuffer = evt.target.result,
             array = new Uint8Array(arrayBuffer);
-          // for (const a of array) {
-          //   fileByteArray.push(a);
-          // }
-          // console.log(fileByteArray)
-          // console.log(typeof (fileByteArray))
           const pdfDoc = await PDFDocument.load(arrayBuffer, {
             updateMetadata: false
           })
-          const author = pdfDoc.getAuthor();
-          const subject = pdfDoc.getSubject();
-          console.log(subject, author)
+          const author = pdfDoc.getAuthor().split(":");
+          const subject = pdfDoc.getSubject().split(":");
+          setPayload({
+            eiAddress: author[1],
+            studentID: subject[1],
+          })
+          setOwnerData(subject[0])
         }
-      }
-      // Load the PDF document without updating its existing metadata
-
-
-
-    };
+        // Load the PDF document without updating its existing metadata
+      };
+    }
     await readPdfMetadata()
   }
-
   const handdleSubmit = () => {
-    console.log("test");
-  };
+    var reader = new FileReader();
 
-  const readFileDataAsBase64 = (e, file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        resolve(event.target.result);
-      };
-
-      reader.onerror = (err) => {
-        reject(err);
-      };
-
-      reader.readAsDataURL(file);
-    });
+    reader.readAsDataURL(selectedFile);
+    reader.onloadend = function () {
+      var base64data = reader.result;
+      setTransData(base64data.toString());
+    }
+    if (transData != null) {
+      // console.log(transData)
+      const hash = hashSha256(transData)
+      console.log(`${payload.eiAddress} ${payload.studentID} hash: ${hash}`);
+      verifyTranscript(payload.eiAddress, payload.studentID, hash).then((v) => {
+        console.log(v)
+      })
+    }
   };
 
   return (
@@ -120,6 +121,9 @@ const VerifyCert = () => {
           ยืนยัน
         </button>
       </div>
+
+      {ownerData!=null && 
+      <h2>{ownerData}</h2>}
     </div>
   );
 };

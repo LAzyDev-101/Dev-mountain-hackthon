@@ -5,7 +5,6 @@ import BlankLayout from "./layout/blank";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import VerifyCert from "./pages/VerifyCert";
-import TranscriptPage from "./pages/TranscriptPage";
 import TranscriptPage from "./pages/academy/TranscriptPage";
 import AdminProfileInfoPage from "./pages/academy/info";
 import AdminTranscriptHistoryPage from "./pages/academy/History";

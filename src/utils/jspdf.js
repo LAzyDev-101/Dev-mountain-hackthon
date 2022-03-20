@@ -341,18 +341,3 @@ const generatePDF = (obj) => {
 
   doc.save("test.pdf");
 };
-
-const hashEduJson = (obj) => {
-  console.log(ethers.utils.keccak256(ethers.utils.toUtf8Bytes(obj)));
-};
-
-const pdfToJson = (pdfPath) => {};
-
-// generatePDF(objOne);
-// hashEduJson(objOne);
-
-
-const exractDataFromPDF = () => {
-
-    
-}
