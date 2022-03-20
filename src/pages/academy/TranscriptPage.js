@@ -1,11 +1,11 @@
 // https://docs.metamask.io/guide/ethereum-provider.html#using-the-provider
 
-import formJSON from "../formObject.json";
+import formJSON from "../../formObject.json";
 import React, { useState, useEffect } from "react";
-import Element from "../components/Transcript/FormFields";
-import { FormContext } from "../components/Transcript/FormContext";
-import FormPreview from "../components/Transcript/FormPreview";
-import BlockPreview from "../components/Transcript/BlockPreview";
+import Element from "../../components/Transcript/FormFields";
+import { FormContext } from "../../components/Transcript/FormContext";
+import FormPreview from "../../components/Transcript/FormPreview";
+import BlockPreview from "../../components/Transcript/BlockPreview";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -126,7 +126,9 @@ const TranscriptPage = () => {
       >
         <DialogTitle id="alert-dialog-title">{"Really?"}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">Are you really agreeing to this shit?</DialogContentText>
+          <DialogContentText id="alert-dialog-description">
+            Are you really agreeing to this shit?
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Fuck no</Button>
@@ -153,7 +155,9 @@ const TranscriptPage = () => {
         </Stepper>
         {activeStep === steps.length ? (
           <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>All steps completed - you&apos;re finished</Typography>
+            <Typography sx={{ mt: 2, mb: 1 }}>
+              All steps completed - you&apos;re finished
+            </Typography>
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Box sx={{ flex: "1 1 auto" }} />
               <Button onClick={handleReset}>Reset</Button>
@@ -173,7 +177,11 @@ const TranscriptPage = () => {
                               {page_label}
                             </div>
                             <form className="bg-white shadow-md rounded px-8 pt-6 pb-8">
-                              {fields ? fields.map((field, i) => <Element key={i} field={field} />) : null}
+                              {fields
+                                ? fields.map((field, i) => (
+                                    <Element key={i} field={field} />
+                                  ))
+                                : null}
                               {/* <button
                                 type="submit"
                                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -206,7 +214,12 @@ const TranscriptPage = () => {
               })()}
             </div>
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
+              <Button
+                color="inherit"
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                sx={{ mr: 1 }}
+              >
                 Back
               </Button>
               <Box sx={{ flex: "1 1 auto" }} />
@@ -225,7 +238,9 @@ const TranscriptPage = () => {
                   Submit
                 </button>
               ) : (
-                <Button onClick={handleNext}>{activeStep === steps.length - 1 ? "Finish" : "Next"}</Button>
+                <Button onClick={handleNext}>
+                  {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                </Button>
               )}
             </Box>
           </React.Fragment>

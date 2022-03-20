@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { ethers } from "ethers";
-import SimpleStorage_abi from "../contracts/SimpleStorage_abi.json";
+import SimpleStorage_abi from "../../contracts/SimpleStorage_abi.json";
 
 const SimpleStorage = () => {
   let contractAddress = "0xC6CD08Fd1E07a81afC2286235de3f25053e857E4";
@@ -54,13 +54,21 @@ const SimpleStorage = () => {
     let tempSigner = tempProvider.getSigner();
     setSigner(tempSigner);
 
-    let tempContract = new ethers.Contract(contractAddress, SimpleStorage_abi, tempSigner);
+    let tempContract = new ethers.Contract(
+      contractAddress,
+      SimpleStorage_abi,
+      tempSigner
+    );
     setContract(tempContract);
   };
 
   const setHandler = (event) => {
     event.preventDefault();
-    console.log("sending " + ethers.utils.parseUnits(event.target.setText.value, "wei") + " to the contract");
+    console.log(
+      "sending " +
+        ethers.utils.parseUnits(event.target.setText.value, "wei") +
+        " to the contract"
+    );
     contract.store(ethers.utils.parseUnits(event.target.setText.value, "wei"));
   };
 
@@ -72,7 +80,10 @@ const SimpleStorage = () => {
 
   return (
     <div className="bg-slate-400 m-2 p-8 drop-shadow rounded">
-      <h4 className="mb-5 font-mono font-bold"> {"Get/Set Contract interaction"} </h4>
+      <h4 className="mb-5 font-mono font-bold">
+        {" "}
+        {"Get/Set Contract interaction"}{" "}
+      </h4>
       <button
         className=" bg-blue-500 hover:bg-blue-700 text-white font-semibold text-sm py-1 px-2 rounded"
         onClick={connectWalletHandler}
@@ -81,7 +92,8 @@ const SimpleStorage = () => {
       </button>
       <div className="mt-5 font-mono font-bold">
         <h3>
-          Address <span className=" text-blue-200 font-thin">{defaultAccount}</span>
+          Address{" "}
+          <span className=" text-blue-200 font-thin">{defaultAccount}</span>
         </h3>
       </div>
       <form className="mt-5" onSubmit={setHandler}>
