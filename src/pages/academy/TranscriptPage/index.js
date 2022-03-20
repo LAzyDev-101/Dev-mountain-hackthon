@@ -1,8 +1,10 @@
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
+import TabBox from "components/TabBox";
 import TranscriptStepper from "components/TranscriptStepper";
 import { useState } from "react";
 import StudentDetailsSection from "./StudentDetailsSection";
+import StudentTranscriptSection from "./StudentTranscriptSection";
 
 const steps = [
   "Student Details",
@@ -59,14 +61,16 @@ const MOCK_TRANSCRIPT = {
 const TranscriptPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
-  const [outPut, setOutput] = useState("No Bitches?");
+  const [output, setOutput] = useState({});
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
 
-  const onChangeOutput = (output) => {
-    setOutput(output);
+  const onChangeOutput = (type, value) => {
+    setOutput((prev) => {
+      return { ...prev, [type]: value };
+    });
   };
 
   const handleNext = () => {
@@ -90,15 +94,6 @@ const TranscriptPage = () => {
     //TODO implement regis transcript
   };
 
-  const Factory = () => {
-    switch (activeStep) {
-      case 0:
-        return <StudentDetailsSection onChangeOutput={onChangeOutput} />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <div>
       <Button variant="contained" onClick={onUploadTranscript}>
@@ -110,7 +105,18 @@ const TranscriptPage = () => {
         isStepSkipped={isStepSkipped}
         steps={steps}
       />
-      {Factory()}
+      <TabBox value={0} index={activeStep}>
+        <StudentDetailsSection
+          onChangeOutput={onChangeOutput}
+          handleNext={handleNext}
+        />
+      </TabBox>
+      <TabBox value={1} index={activeStep}>
+        <StudentTranscriptSection
+          onChangeOutput={onChangeOutput}
+          handleNext={handleNext}
+        />
+      </TabBox>
     </div>
   );
 };
