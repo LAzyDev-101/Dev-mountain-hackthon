@@ -11,5 +11,11 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Roboto", monospace;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Prompt");
+
+* {
+  font-family: "Prompt" !important;
 }

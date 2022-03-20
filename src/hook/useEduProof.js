@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
-import { useEduProofContract } from './useContracts'
-import useActiveWeb3React from './useActiveWeb3React'
+import { useEduProofContract } from 'hook/useContracts'
+import useActiveWeb3React from 'hook/useActiveWeb3React'
 
 
-export const useRegisterEI = (eiid, name, secretHash) => {
+export const useRegisterEI = () => {
     const account = useActiveWeb3React()
     const contract = useEduProofContract()
-    const registerEIID = useCallback(async () => {
+    const registerEIID = useCallback(async (eiid, name, secretHash) => {
         if (account) {
 
             try {
@@ -18,14 +18,14 @@ export const useRegisterEI = (eiid, name, secretHash) => {
             }
         }
         return true
-    }, [account, eiid, name, secretHash, contract])
+    }, [account, contract])
     return registerEIID
 }
 
-export const useApproveEIID = (eiAddress, secretWord) => {
+export const useApproveEIID = () => {
     const account = useActiveWeb3React()
     const contract = useEduProofContract()
-    const approveEIID = useCallback(async () => {
+    const approveEIID = useCallback(async (eiAddress, secretWord) => {
         if (account) {
 
             try {
@@ -37,14 +37,14 @@ export const useApproveEIID = (eiAddress, secretWord) => {
             }
         }
         return true
-    }, [account, eiAddress, secretWord, contract])
+    }, [account, contract])
     return approveEIID
 }
 
-export const useIssueTranscript = (studentID, hash) => {
+export const useIssueTranscript = () => {
     const account = useActiveWeb3React()
     const contract = useEduProofContract()
-    const issueTranscript = useCallback(async () => {
+    const issueTranscript = useCallback(async (studentID, hash) => {
         if (account) {
 
             try {
@@ -56,26 +56,25 @@ export const useIssueTranscript = (studentID, hash) => {
             }
         }
         return true
-    }, [account, studentID, hash, contract])
+    }, [account, contract])
     return issueTranscript
 }
 
-export const useVerifyTranscript = (eiAddress, studentID, hash) => {
+export const useVerifyTranscript = () => {
     const account = useActiveWeb3React()
     const contract = useEduProofContract()
-    const verifyTranscript = useCallback(async () => {
+    const verifyTranscript = useCallback(async (eiAddress, studentID, hash) => {
         if (account) {
 
             try {
                 const res = await contract.verifyTransript(eiAddress, studentID, hash)
-                await res.wait()
+                return res
             } catch (e) {
                 console.log("err : ", e)
                 return false
             }
         }
         return true
-    }, [account, eiAddress, studentID, hash, contract])
+    }, [account, contract])
     return verifyTranscript
 }
-
