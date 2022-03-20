@@ -9,24 +9,43 @@ import { ReactComponent as Logo } from "../assets/logo.svg";
 import jsPDF from "../utils/jspdf";
 import React, { useState } from "react";
 import { Buffer } from "buffer";
+import { PDFDocument } from 'pdf-lib'
 
 const VerifyCert = () => {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const changeHandler = async (event) => {
     setSelectedFile(event.target.files[0]);
-    const reader = new FileReader();
-    // var data = await readFileDataAsBase64(event, event.target.files[0])
-    reader.addEventListener("load", (event) => {
-      console.log(event.target.result);
-    });
-    const data = await reader.readAsBinaryString(event.target.files[0]);
-    console.log(data);
+    async function readPdfMetadata() {
+      // Fetch PDF
 
-    let base64ToString = Buffer.from(data, "base64").toString("utf8");
-    // base64ToString = JSON.parse(base64ToString);
-    console.log(base64ToString);
-  };
+      var reader = new FileReader();
+      const fileByteArray = [];
+      reader.readAsArrayBuffer(event.target.files[0]);
+      reader.onloadend = async (evt) => {
+        if (evt.target.readyState === FileReader.DONE) {
+          const arrayBuffer = evt.target.result,
+            array = new Uint8Array(arrayBuffer);
+          // for (const a of array) {
+          //   fileByteArray.push(a);
+          // }
+          // console.log(fileByteArray)
+          // console.log(typeof (fileByteArray))
+          const pdfDoc = await PDFDocument.load(arrayBuffer, {
+            updateMetadata: false
+          })
+          const author = pdfDoc.getAuthor();
+          const subject = pdfDoc.getSubject();
+          console.log(subject, author)
+        }
+      }
+      // Load the PDF document without updating its existing metadata
+
+
+
+    };
+    await readPdfMetadata()
+  }
 
   const handdleSubmit = () => {
     console.log("test");
