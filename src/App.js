@@ -4,6 +4,8 @@ import DefaultLayout from "./layout/default";
 import BlankLayout from "./layout/blank";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
+import IssueCert from "./pages/IssueCert";
+import AdminApproveResponse from "./pages/admin/AdminApproveResponse ";
 import VerifyCert from "./pages/VerifyCert";
 import TranscriptPage from "./pages/academy/TranscriptPage";
 import AdminProfileInfoPage from "./pages/academy/info";
@@ -26,6 +28,9 @@ function App() {
           <Route path="/academy/transcript" element={<TranscriptPage />} />
           <Route path="/academy/info" element={<AdminProfileInfoPage />} />
           <Route path="/academy/history" element={<AdminTranscriptHistoryPage />} />
+        </Route>
+        <Route path="" element={<DefaultLayout />}>
+          <Route path="/admin/response" element={<AdminApproveResponse />} />
         </Route>
       </Routes>
     </BrowserRouter>
